@@ -51,7 +51,7 @@ public class ClienteService {
 	private void validarIdadeDo(Cliente cliente) {
 		Preconditions.checkArgument(
 				cliente.getIdade() > IDADE_MINIMA, 
-				"A idade do cliente deve ser maior que 12 anos");
+				"O cliente deve possuir maior de 12 anos");
 		
 	}
 	
