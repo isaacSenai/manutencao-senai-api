@@ -23,9 +23,7 @@ public class ClienteService {
 	final int IDADE_MINIMA = 12;
 	
 	public Cliente inserir(@Valid Cliente novoCliente) {
-		Preconditions.checkArgument(
-				novoCliente.getIdade() > IDADE_MINIMA,
-				"O cliente deve possuir mais de 12 anos");
+		this.validarIdadeDo(novoCliente);
 		Cliente clienteSalvo = novoCliente;
 		return clienteSalvo;
 	}
@@ -37,21 +35,23 @@ public class ClienteService {
 	}
 	
 	public List<Cliente> listarPor(
-			@NotEmpty(message = "O nome para busca é obririo")
-			@NotBlank(message = "O nome para busca não deve conter espaço em braco")
+			@NotEmpty(message = "O nome para busca é obrigatório")
+			@NotBlank(message = "O nome para busca não deve conter espaço em branco")
 			String nome) {
 		return new ArrayList<Cliente>();
 	}
 	
 	public void removerPor(
-			@NotNull(message = "O id para ")
-			@Min(value = 1, message = "O id")
+			@NotNull(message = "O id para remoção não pode ser nulo")
+			@Min(value = 1, message = "O id deve ser maior que zero")
 			Integer id) {
 		
 	}
 	
 	private void validarIdadeDo(Cliente cliente) {
-		Preconditions.checkArgument(false);
+		Preconditions.checkArgument(
+				cliente.getIdade() > IDADE_MINIMA, 
+				"A idade do cliente deve ser maior que 12 anos");
 		
 	}
 	
