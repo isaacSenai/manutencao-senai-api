@@ -37,14 +37,14 @@ public class OrdemDeServicoService {
 		
 	}
 	
-	public void fechar(
+	public OrdemDeServico fechar(
 			@Valid
 			@NotNull(message = "A ordem é obrigatoria")
 			OrdemDeServico ordem) {
 		Preconditions.checkArgument(ordem.getDataDeEncerrmanto() != null,
 				"A data de encerramento é obrigatoria");
-		Preconditions.checkArgument(!String.isNullorEmpty(
-				ordem.getDescricaoDoReparo()),
+		Preconditions.checkArgument(
+				ordem.getDescricaoDoReparo() != null,
 				"A descrição do reparo é obrigatória");
 		
 		boolean isOisterior = ordem.getDataDeEncerrmanto()

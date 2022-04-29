@@ -3,6 +3,7 @@ package br.com.senai.manutencaosenaiapi;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,11 +13,13 @@ import org.springframework.boot.autoconfigure.integration.IntegrationProperties.
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
+
 import br.com.senai.manutencaosenaiapi.entity.Cliente;
 import br.com.senai.manutencaosenaiapi.entity.OrdemDeServico;
 import br.com.senai.manutencaosenaiapi.entity.Peca;
 import br.com.senai.manutencaosenaiapi.entity.Sexo;
 import br.com.senai.manutencaosenaiapi.entity.Tecnico;
+import br.com.senai.manutencaosenaiapi.repository.PecasRepository;
 import br.com.senai.manutencaosenaiapi.service.ClienteService;
 import br.com.senai.manutencaosenaiapi.service.OrdemDeServicoService;
 import br.com.senai.manutencaosenaiapi.service.PecaService;
@@ -42,53 +45,30 @@ public class InitApp {
 	@Autowired
 	private OrdemDeServicoService ordemDeService;
 	
+	@Autowired
+	private PecasRepository pecasRepository;
+	
 	@Bean	
 	public CommandLineRunner commandLineRunner(ApplicationContext ac) {
 		return args -> {
 			try {
-				OrdemDeServico novaOrdem = new OrdemDeServico();
-				novaOrdem.setDescricaoDoProbelma("problema");
-				Cliente cliente = new Cliente();
-				cliente.setId(1);
-				novaOrdem.setCliente(cliente);
-				novaOrdem.setDataDeAbertura(LocalDate.now());
-				Tecnico tecnico = new Tecnico();
-				tecnico.setId(1);
-				novaOrdem.setTecnico(tecnico);
-				Peca peca = new Peca();
-				//peca.setId(1);
-				List<Peca> pecas = new ArrayList<Peca>();
-				pecas.add(peca);
-				novaOrdem.setPecasDoReparos(pecas);
-				this.ordemDeService.inserir(novaOrdem);
-				/*Tecnico novoTecnico = new Tecnico();
-				novoTecnico.setNomeCompleto("Josevildo Soares");
-				LocalDate dataDeAdmissao = LocalDate.of(2022, 4, 7);
-				novoTecnico.setDataDeAdmissao(dataDeAdmissao);
-				this.service.inserir(novoTecnico);*/
-				/*Tecnico tecnicoSalvo = new Tecnico();
-				tecnicoSalvo.setId(1);
-				tecnicoSalvo.setNomeCompleto("Joanecleidson");
-				tecnicoSalvo.setDataDeAdmissao(LocalDate.now());
-				this.service.alterar(tecnicoSalvo);
-				System.out.println("Técnico salvo com sucesso");*/
-				/*this.service.listarPro("josé");
-				this.service.remoVerPor(0);*/
-				/*Cliente novoCliente = new Cliente();
-				novoCliente.setNome("joão");
-				novoCliente.setSobrenome("da silva");
-				novoCliente.setCpf("005.900.257-10");
-				novoCliente.setSexo(Sexo.MASCULINO);
-				novoCliente.setDataDeNacimento(LocalDate.of(2018, 9, 14));
-				novoCliente.setEndereco("Rua sei la oq");
-				this.clienteService.inserir(novoCliente);
-				System.out.println("Cliente salvo com sucesso");*/
-				
 				/*Peca novaPeca = new Peca();
-				novaPeca.setDescricao("teclado");
-				novaPeca.setEspecificacoes(18);
-				System.out.println("fffffff");*/
+				novaPeca.setDescricao("Placa Mãe Gigabit");
+				novaPeca.setEspecificacoes("Boa placa");
+				novaPeca.setQtdeEmEstoque(10);
+				Peca pecaSalva = this.pecasRepository.save(novaPeca);
+				System.out.println("Id da peça: " + pecaSalva.getId());*/
 				
+				Optional<Peca> pecaEncomtrada = pecasRepository.findById(7);
+				
+				pecaEncomtrada.get().setEspecificacoes("Especificação alterada");
+				Peca pecaAterada = pecasRepository.save(pecaEncomtrada.get());
+				
+				System.out.println(pecaAterada);
+				
+				if (pecaEncomtrada.isPresent()) {
+					System.out.println("Peça encontrada: " + pecaEncomtrada);
+				}
 				
 			}catch (Exception e) {
 				System.out.println(e.getMessage());
