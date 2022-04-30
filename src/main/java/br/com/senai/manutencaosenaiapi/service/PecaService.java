@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -39,11 +40,18 @@ public class PecaService {
 		return pecaAtualizada;
 	}
 	
+	public void removerPor(
+			@NotNull(message = "O id da peça para remção não pode ser null")
+			@Min(value = 1,message = "O id da peça  deve ser maior que zero")
+			Integer id) {
+		this.repository.deleteById(id);
+	}
+	
 	public List<Peca> listarPor(
 			@NotEmpty(message = "A descrição da busca é obrigatoria")
 			@NotBlank(message = "A bescri não pode conter espaço em branco")
 			String descricao) {
-		return new ArrayList<Peca>();
+		return repository.listarPor("%" + descricao + "%");
 	}
 	
 	

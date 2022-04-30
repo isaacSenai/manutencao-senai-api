@@ -9,17 +9,22 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import com.google.common.base.Preconditions;
 
 import br.com.senai.manutencaosenaiapi.entity.Tecnico;
+import br.com.senai.manutencaosenaiapi.repository.TecnicosRepository;
 
 @Service
 @Validated
 public class TecnicoService {
 
+	@Autowired
+	private TecnicosRepository repository;
+	
 	public Tecnico inserir(
 			@Valid
 			@NotNull(message = "O técnico não pode ser nulo")
@@ -43,14 +48,14 @@ public class TecnicoService {
 	public List<Tecnico> listarPro(
 			@NotEmpty(message = "O nome para busca não pode ser nilo")
 			String nome) {
-		return new ArrayList<Tecnico>();
+		return repository.listarPor("%" + nome + "%");
 	}
 	
 	public void remoVerPor(
 			@NotNull(message = "o id de exclusão não pode ser nulo")
 			@Min(value = 1, message = "O ID não pode ser nulo")
 			Integer id) {
-		
+		this.repository.deleteById(id);
 	}
 	
 	
